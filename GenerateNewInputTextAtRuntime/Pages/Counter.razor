@@ -1,0 +1,35 @@
+﻿@page "/Counter"
+ @*other example to create inputtext at runtimt by using renderfragment but it  doesn't work*@
+
+
+<h1>Dynamic Input Text</h1>
+
+<button @onclick="AddInput">Add Input</button>
+
+@foreach (var inputValue in inputValues)
+{
+    <div>
+        <input type="text" @bind-value="@inputValue" />
+    </div>
+}
+
+@code {
+    private List<string> inputValues = new List<string>();
+
+    private void AddInput()
+    {
+        inputValues.Add("");
+    }
+
+    private RenderFragment CreateInput(int index)
+    {
+        var value = inputValues[index];
+        return builder =>
+        {
+            builder.OpenComponent(0, typeof(InputText));
+            builder.AddAttribute(1, "Value", value);
+            builder.AddAttribute(2, "ValueChanged", EventCallback.Factory.Create<string>(this, newValue => inputValues[index] = newValue));
+            builder.CloseComponent();
+        };
+    }
+}

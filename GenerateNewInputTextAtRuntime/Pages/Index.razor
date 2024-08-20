@@ -1,0 +1,32 @@
+﻿@page "/"
+
+<h1>Dynamic Input Text</h1>
+
+@foreach (var input in inputs)
+{
+    <div>
+        <input type="text" @bind-value="@input.Value" />
+        <button @onclick="() => RemoveInput(input)">Remove</button>
+    </div>
+}
+
+<button @onclick="AddInput">Add Input</button>
+
+@code {
+    private List<Input> inputs = new List<Input>();
+
+    private void AddInput()
+    {
+        inputs.Add(new Input());
+    }
+
+    private void RemoveInput(Input input)
+    {
+        inputs.Remove(input);
+    }
+
+    private class Input
+    {
+        public string Value { get; set; }
+    }
+}
